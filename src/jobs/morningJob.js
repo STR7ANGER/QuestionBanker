@@ -36,7 +36,7 @@ async function runMorningJob() {
 
       await pool.query(
         'INSERT INTO daily_logs (user_id, date, questions, status) VALUES ($1, $2, $3, $4)',
-        [user.id, today, questions, 'pending']
+        [user.id, today, questions ? JSON.stringify(questions) : null, 'pending']
       );
 
       const message = formatQuestionsMessage(questions);

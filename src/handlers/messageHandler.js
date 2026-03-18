@@ -60,7 +60,7 @@ async function handleCommand(chatId, user, text) {
       const questions = ylog ? ylog.questions : null;
       await pool.query(
         'INSERT INTO daily_logs (user_id, date, questions, status) VALUES ($1, $2, $3, $4)',
-        [user.id, today, questions, 'leave']
+        [user.id, today, questions ? JSON.stringify(questions) : null, 'leave']
       );
     }
 
