@@ -15,7 +15,7 @@ const config = {
   webhookSecret: required('TELEGRAM_WEBHOOK_SECRET'),
   cronSecret: required('CRON_SECRET'),
   geminiApiKey: required('GEMINI_API_KEY'),
-  geminiModel: process.env.GEMINI_MODEL || 'gemini-1.5-flash-latest',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
   appBaseUrl: required('APP_BASE_URL'),
   timezone: process.env.TZ || 'Asia/Kolkata'
 };

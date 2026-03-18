@@ -55,4 +55,5 @@ Edit `config/topics.json` with your topic list.
 - One submission per day.
 - Leave costs 60 points and reuses yesterday's questions.
 - Cooldown prevents repeats for `COOLDOWN_DAYS` (default 14).
+- Default Gemini model is `gemini-2.5-flash` (set via `GEMINI_MODEL`).
 # QuestionBanker
