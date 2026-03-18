@@ -71,8 +71,8 @@ function formatQuestionsMessage(questions) {
     lines.push(q.link);
     lines.push('');
   });
-  lines.push('Reply before 11 PM IST:');
-  lines.push('Example → 1 2 3');
+  lines.push('Reply before 11 PM IST with how many you solved (0-5).');
+  lines.push('Example → 3');
   return lines.join('\n');
 }
 

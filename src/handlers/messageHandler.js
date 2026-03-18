@@ -91,13 +91,13 @@ async function handleSolvedInput(chatId, user, text) {
     return;
   }
 
-  const solvedList = parseSolvedInput(text);
-  if (solvedList.length === 0) {
-    await bot.sendMessage(chatId, 'Invalid reply. Use: 1 2 3');
+  const solvedCount = parseSolvedInput(text);
+  if (solvedCount === null) {
+    await bot.sendMessage(chatId, 'Invalid reply. Send a single number from 0 to 5 (example: 3).');
     return;
   }
 
-  const rewards = computeRewards(solvedList.length, 5);
+  const rewards = computeRewards(solvedCount, 5);
   await setDailyLogStatus(user.id, today, 'completed', rewards.solved);
   const updated = await updateBalanceAndPoints(user.id, rewards.net, rewards.points);
 
