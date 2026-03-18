@@ -1,20 +1,6 @@
 const config = require('../../src/config');
-const bot = require('../../src/bot/telegram');
 const { onTelegramMessage } = require('../../src/handlers/messageHandler');
 const { logError } = require('../../src/utils/logger');
-
-let initialized = false;
-function ensureHandler() {
-  if (initialized) return;
-  bot.on('message', async (msg) => {
-    try {
-      await onTelegramMessage(msg);
-    } catch (err) {
-      logError('Message handler error', { error: String(err) });
-    }
-  });
-  initialized = true;
-}
 
 module.exports = async (req, res) => {
   if (req.query.secret !== config.webhookSecret) {
@@ -25,8 +11,10 @@ module.exports = async (req, res) => {
   }
 
   try {
-    ensureHandler();
-    bot.processUpdate(req.body);
+    const update = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    if (update && update.message) {
+      await onTelegramMessage(update.message);
+    }
     return res.status(200).json({ ok: true });
   } catch (err) {
     logError('Webhook error', { error: String(err) });
