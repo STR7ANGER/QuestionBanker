@@ -22,28 +22,23 @@ psql "$DATABASE_URL" -f sql/schema.sql
 npm start
 ```
 
-## Telegram Webhook
+## Telegram Webhook (Vercel)
 
 Set webhook to:
 
 ```
-https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook?url=<APP_BASE_URL>/webhook/<TELEGRAM_WEBHOOK_SECRET>
+https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook?url=<APP_BASE_URL>/api/webhook/<TELEGRAM_WEBHOOK_SECRET>
 ```
 
-## Render Deployment (Recommended)
+## Vercel Deployment (Recommended)
 
-Create a Web Service:
-- Build: `npm install`
-- Start: `npm start`
-- Add env vars from `.env.example`
+1) Import the repo into Vercel.
+2) Set environment variables from `.env.example`.
+3) Vercel cron jobs are configured in `vercel.json` (UTC schedules).
 
-Create two Render Cron Jobs:
-- Morning (8:00 AM IST):
-  - URL: `<APP_BASE_URL>/cron/morning/<CRON_SECRET>`
-  - Method: POST
-- Night (11:00 PM IST):
-  - URL: `<APP_BASE_URL>/cron/night/<CRON_SECRET>`
-  - Method: POST
+Cron auth:
+- Set `CRON_SECRET` in Vercel env vars.
+- Vercel will send `Authorization: Bearer <CRON_SECRET>` to the cron endpoints.
 
 ## Topics
 
