@@ -17,7 +17,7 @@ const config = {
   geminiApiKey: required('GEMINI_API_KEY'),
   geminiModel: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
   appBaseUrl: required('APP_BASE_URL'),
-  timezone: process.env.TZ || 'Asia/Kolkata'
+  timezone: process.env.APP_TZ || process.env.TZ || 'Asia/Kolkata'
 };
 
 module.exports = config;
