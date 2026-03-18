@@ -1,17 +1,15 @@
 const pool = require('../db');
 
 async function getOrCreateUser(telegramId, username) {
-  const existing = await pool.query(
-    'SELECT * FROM users WHERE telegram_id = $1',
-    [telegramId]
-  );
-  if (existing.rows.length > 0) return existing.rows[0];
-
-  const created = await pool.query(
-    'INSERT INTO users (telegram_id, username) VALUES ($1, $2) RETURNING *',
+  const result = await pool.query(
+    `INSERT INTO users (telegram_id, username)
+     VALUES ($1, $2)
+     ON CONFLICT (telegram_id)
+     DO UPDATE SET username = EXCLUDED.username
+     RETURNING *`,
     [telegramId, username || null]
   );
-  return created.rows[0];
+  return result.rows[0];
 }
 
 async function updateBalanceAndPoints(userId, balanceDelta, pointsDelta) {
