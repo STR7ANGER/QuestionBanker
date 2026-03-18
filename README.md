@@ -54,4 +54,5 @@ Edit `config/topics.json` with your topic list.
 - Replies accepted only before 11 PM IST.
 - One submission per day.
 - Leave costs 60 points and reuses yesterday's questions.
+- Cooldown prevents repeats for `COOLDOWN_DAYS` (default 14).
 # QuestionBanker

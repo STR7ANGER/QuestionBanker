@@ -12,7 +12,10 @@ const questionSchema = z.object({
 
 const responseSchema = z.array(questionSchema).length(5);
 
-function buildPrompt(topics) {
+function buildPrompt(topics, avoidList) {
+  const avoidText = avoidList && avoidList.length > 0
+    ? `Avoid any LeetCode problems with IDs or links in this list: ${avoidList.join(', ')}.`
+    : 'No exclusions.';
   return `You are selecting LeetCode questions.
 Return EXACTLY 5 items as a JSON array. Each item must have:
 - leetcode_id (number)
@@ -21,11 +24,13 @@ Return EXACTLY 5 items as a JSON array. Each item must have:
 - topic (one of: ${topics.join(', ')})
 - difficulty (Easy|Medium|Hard)
 
+${avoidText}
+
 Only return JSON. No markdown. No extra text.`;
 }
 
-async function callGemini(topics) {
-  const prompt = buildPrompt(topics);
+async function callGemini(topics, avoidList) {
+  const prompt = buildPrompt(topics, avoidList);
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${config.geminiModel}:generateContent?key=${config.geminiApiKey}`;
 
   const body = {
@@ -60,11 +65,11 @@ async function callGemini(topics) {
   return text;
 }
 
-async function getQuestionsFromGemini(topics) {
+async function getQuestionsFromGemini(topics, avoidList = []) {
   let lastError = null;
   for (let attempt = 1; attempt <= 2; attempt += 1) {
     try {
-      const text = await callGemini(topics);
+      const text = await callGemini(topics, avoidList);
       const parsed = JSON.parse(text);
       const validated = responseSchema.parse(parsed);
       return validated;

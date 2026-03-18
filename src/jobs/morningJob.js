@@ -31,7 +31,7 @@ async function runMorningJob() {
       if (y && y.status === 'leave' && y.questions) {
         questions = y.questions;
       } else {
-        questions = await generateDailyQuestions();
+        questions = await generateDailyQuestions(user.id);
       }
 
       await pool.query(
